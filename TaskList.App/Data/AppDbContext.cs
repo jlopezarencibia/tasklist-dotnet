@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TaskList.App.Entities;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
@@ -12,6 +13,7 @@ namespace TaskList.App.Data;
 
 public class AppDbContext : AbpDbContext<AppDbContext>
 {
+    public DbSet<TodoTask> Tasks { get; set; }
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
@@ -30,6 +32,11 @@ public class AppDbContext : AbpDbContext<AppDbContext>
         builder.ConfigureOpenIddict();
         builder.ConfigureFeatureManagement();
         builder.ConfigureTenantManagement();
+
+        builder.Entity<TodoTask>(b =>
+        {
+            b.ToTable("TodoTasks");
+        });
 
         /* Configure your own entities here */
     }
